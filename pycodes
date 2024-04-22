@@ -1,0 +1,97 @@
+import math
+def minimax (curDepth, nodeIndex,maxTurn, scores,targetDepth):
+	if (curDepth == targetDepth): 
+		return scores[nodeIndex]
+	if (maxTurn):
+		return max(minimax(curDepth + 1, nodeIndex * 2,False, scores, targetDepth), 
+				minimax(curDepth + 1, nodeIndex * 2 + 1,False, scores, targetDepth)) 
+	else:
+		return min(minimax(curDepth + 1, nodeIndex * 2,True, scores, targetDepth), 
+				minimax(curDepth + 1, nodeIndex * 2 + 1,True, scores, targetDepth))
+scores = [3, 5, 2, 9, 12, 5, 23, 23]
+treeDepth = math.log(len(scores), 2)
+print("The optimal value is : ", end = "")
+print(minimax(0, 0, True, scores, treeDepth))
+
+
+MAX, MIN = float('inf'), float('-inf')
+def minimax(depth, nodeIndex, maximizingPlayer, values, alpha, beta):
+    if depth == 3:
+        return values[nodeIndex]
+    if maximizingPlayer: 
+        best = MIN
+        for i in range(2):
+            val = minimax(depth + 1, nodeIndex * 2 + i, False, values, alpha, beta)
+            best = max(best, val)
+            alpha = max(alpha, best)
+            if beta <= alpha:
+                break
+        return best
+    else:
+        best = MAX
+        for i in range(2):
+            val = minimax(depth + 1, nodeIndex * 2 + i, True, values, alpha, beta)
+            best = min(best, val)
+            beta = min(beta, best)
+            if beta <= alpha:
+                break
+        return best
+if __name__ == "__main__":
+    values = [3, 5, 6, 9, 1, 2, 0, -1]
+    print("The optimal value is:", minimax(0, 0, True, values, MIN, MAX))
+
+from collections import defaultdict
+class Graph:
+	def __init__(self):
+		self.graph = defaultdict(list)
+	def addEdge(self, u, v):
+		self.graph[u].append(v)
+	def BFS(self, s):
+		visited = [False] * (max(self.graph) + 1)
+		queue = []
+		queue.append(s)
+		visited[s] = True
+		while queue:
+			s = queue.pop(0)
+			print(s, end=" ")
+			for i in self.graph[s]:
+				if visited[i] == False:
+					queue.append(i)
+					visited[i] = True
+if __name__ == '__main__':
+	g = Graph()
+	g.addEdge(0, 1)
+	g.addEdge(0, 2)
+	g.addEdge(1, 2)
+	g.addEdge(2, 0)
+	g.addEdge(2, 3)
+	g.addEdge(3, 3)
+	print("Following is Breadth First Traversal"" (starting from vertex 2)")
+	g.BFS(2) 
+
+
+from collections import defaultdict
+class Graph:
+	def __init__(self):
+		self.graph = defaultdict(list)
+	def addEdge(self, u, v):
+		self.graph[u].append(v)
+	def DFSUtil(self, v, visited):
+		visited.add(v)
+		print(v, end=' ')
+		for neighbour in self.graph[v]:
+			if neighbour not in visited:
+				self.DFSUtil(neighbour, visited)
+	def DFS(self, v):
+		visited = set()
+		self.DFSUtil(v, visited)
+if __name__ == "__main__":
+	g = Graph()
+	g.addEdge(0, 1)
+	g.addEdge(0, 2)
+	g.addEdge(1, 2)
+	g.addEdge(2, 0)
+	g.addEdge(2, 3)
+	g.addEdge(3, 3)
+	print("Following is Depth First Traversal (starting from vertex 2)")
+	g.DFS(2) 
